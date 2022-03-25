@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:14.2
+    environment:
+      - POSTGRES_DB=blahgr_dev
+      - POSTGRES_USER=blahgr
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - '5555:5432'
+
+volumes:
+  pgdata:

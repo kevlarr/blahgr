@@ -9,21 +9,32 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
+
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Reading `.env.dist` last means it has lowest precedence
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env(os.path.join(BASE_DIR, '.env.dist'))
+
+ENV = environ.Env(
+    DJANGO_SECRET_KEY=str,
+    POSTGRES_HOST=str,
+    POSTGRES_PORT=int,
+    POSTGRES_NAME=str,
+    POSTGRES_USER=str,
+    POSTGRES_PASSWORD=str,
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9yhe8r@+0cup=f#4-ec3fsfa(a%#wpofqgxu1^!v9_hpsg2-1z'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = ENV('DJANGO_SECRET_KEY')
+DEBUG = ENV('DJANGO_DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -75,8 +86,12 @@ WSGI_APPLICATION = 'blahgr.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': ENV('POSTGRES_HOST'),
+        'PORT': ENV('POSTGRES_PORT'),
+        'NAME': ENV('POSTGRES_NAME'),
+        'USER': ENV('POSTGRES_USER'),
+        'PASSWORD': ENV('POSTGRES_PASSWORD'),
     }
 }
 
