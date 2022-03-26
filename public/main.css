@@ -1,0 +1,35 @@
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    flex: 1;
+    padding: 2rem;
+}
+
+header, footer {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 50px;
+}
+
+header {
+    border-bottom: 1px solid black;
+}
+
+footer {
+    border-top: 1px solid black;
+}
