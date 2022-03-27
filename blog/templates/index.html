@@ -7,13 +7,15 @@
             <h1 class="title">{{headline.title}}</h1>
             <p class="meta">Posted by {{headline.author.username}} on {{headline.created_at|date:'D, M jS Y \a\t h:i A'}}</p>
             <p class="snippet">{{headline.text|slice:":1000"}}</p>
-            <p class="more"><a href="{% url 'blog-index' %}">Read more &rarr;</a></p>
+            <p class="more"><a href="{% url 'blog-details' headline.id %}">Read more &rarr;</a></p>
         </div>
         {% if remaining|length > 0 %}
             <ul class="remaining-posts">
                 {% for meta in remaining %}
                     <li class="post-summary">
-                        <h2>{{meta.title}}</h2>
+                        <h2>
+                            <a class="title-link" href="{% url 'blog-details' meta.id %}">{{meta.title}}</a>
+                        </h2>
                         <p>By {{meta.author_username}} on {{meta.created_at|date:'m/d/Y'}}</p>
                     </li>
                 {% endfor %}
