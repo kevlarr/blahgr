@@ -111,3 +111,17 @@ def new_comment(request, post_id):
     messages.success(request, 'Thanks for adding to the discussion!')
 
     return redirect('blog-details', post.id)
+
+
+def delete_comment(request, comment_id):
+    if request.method != 'POST':
+        raise Http404
+
+    comment = queries.comment(comment_id)
+
+    if not request.user.is_authenticated or request.user.id != comment.author.id:
+        return HttpResponse('Unauthorized', status=401)
+
+    comment.delete()
+
+    return redirect('blog-details', comment.post_id)
