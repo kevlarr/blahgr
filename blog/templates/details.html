@@ -31,5 +31,12 @@
     {% endif %}
 
     <p><a href="{% url 'blog-index' %}">&larr; Back to posts</a></p>
+
+    {% if post.author.id == user.id %}
+        <form class="delete" method="POST" action="{% url 'blog-delete' post.id %}">
+            {% csrf_token %}
+            <button type="submit">Remove the post</button>
+        </form>
+    {% endif %}
 {% endspaceless %}
 {% endblock %}

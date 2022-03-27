@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.utils import IntegrityError
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, render
 
 from .forms import CommentForm, PostForm
@@ -67,6 +67,22 @@ def details(request, post_id):
         template_name='details.html',
         context={'post': post, 'comment_form': comment_form},
     )
+
+
+def delete(request, post_id):
+    if request.method != 'POST':
+        raise Http404
+
+    post = queries.post(post_id)
+
+    # This doesn't use `login_required` because it shouldn't redirect,
+    # so check if not authenticated
+    if not request.user.is_authenticated or request.user.id != post.author.id:
+        return HttpResponse('Unauthorized', status=401)
+
+    post.delete()
+
+    return redirect('blog-index')
 
 
 @login_required
