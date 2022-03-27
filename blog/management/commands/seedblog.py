@@ -32,7 +32,7 @@ class Command(BaseCommand):
         """
         self.seeder.add_entity(USER, 5)
         self.seeder.add_entity(Post, 15, {
-            'text': lambda _: self.seeder.faker.paragraph(10),
+            'text': lambda _: '\n'.join(self.seeder.faker.paragraphs(10)),
         })
         self.seeder.add_entity(Comment, 45, {
             'text': lambda _: self.seeder.faker.paragraph(3),

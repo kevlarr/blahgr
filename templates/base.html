@@ -10,9 +10,11 @@
         <link href="{% static 'main.css' %}" rel="stylesheet"/>
     </head>
     <body>
-        <header>{% include "header.html" %}</header>
-        <main>
+        <header>
+            {% include "header.html" %}
             {% include "messages.html" %}
+        </header>
+        <main>
             {% block content %}{% endblock %}
         </main>
         <footer>{% include "footer.html" %}</footer>

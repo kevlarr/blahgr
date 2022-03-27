@@ -6,20 +6,19 @@
         <div class="headline-post">
             <h1 class="title">{{headline.title}}</h1>
             <p class="meta">Posted by {{headline.author.username}} on {{headline.created_at|date:'D, M jS Y \a\t h:i A'}}</p>
-            <p class="snippet">{{headline.text|slice:":500"}}</p>
+            <p class="snippet">{{headline.text|slice:":1000"}}</p>
+            <p class="more"><a href="{% url 'blog-index' %}">Read more &rarr;</a></p>
         </div>
-        <div class="remaining-posts">
-            {% if remaining|length > 0 %}
-                <ul>
-                    {% for meta in remaining %}
-                        <li>
-                            <h2>{{meta.title}}</h2>
-                            <p>By {{meta.author_username}} on {{meta.created_at|date:'m/d/Y'}}</p>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
+        {% if remaining|length > 0 %}
+            <ul class="remaining-posts">
+                {% for meta in remaining %}
+                    <li class="post-summary">
+                        <h2>{{meta.title}}</h2>
+                        <p>By {{meta.author_username}} on {{meta.created_at|date:'m/d/Y'}}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
 {% endspaceless %}
 {% endblock %}
