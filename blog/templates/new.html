@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Write a new post{% endblock %}
+
+{% block content %}
+    <div>
+        <h1>What's on your mind?</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_ul }}
+            <button type="submit">Post!</button>
+        </form>
+    </div>
+{% endblock %}

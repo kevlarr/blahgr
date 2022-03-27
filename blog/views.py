@@ -1,5 +1,7 @@
+from django.http import Http404
 from django.shortcuts import render
 
+from .forms import PostForm
 from . import queries
 
 
@@ -11,6 +13,23 @@ def index(request):
         request=request,
         template_name='index.html',
         context={'headline': headline, 'remaining': remaining},
+    )
+
+
+def new(request):
+    # TODO: Okay this is *definitely* a pattern so there must
+    # be a standard abstraction for this
+    match request.method:
+        case 'GET':
+            form = PostForm()
+
+        case _:
+            raise Http404
+
+    return render(
+        request=request,
+        template_name='new.html',
+        context={'form': form},
     )
 
 
