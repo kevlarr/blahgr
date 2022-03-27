@@ -27,5 +27,7 @@ $ docker-compose run server poetry run python manage.py seedblog
 
 To stop the services, either `CTRL-C` if running in foreground or `docker-compose down`
 if running detached. This will preserve the database so future restarts will not require
-migrations or seed data. If you would like to *reset the database completely* then
+migrations or seed data.
+
+If you would like to **reset the database completely** then
 run `docker-compose down -v` to remove the data volume from your host system.
