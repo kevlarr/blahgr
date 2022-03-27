@@ -73,3 +73,10 @@ def post_summaries(*, offset: int = 0) -> list[PostSummary]:
     ) for row in queryset]
 
 
+def comment(comment_id: int) -> Comment:
+    """
+    Returns the comment by id along with author
+    """
+    return (Comment.objects
+        .prefetch_related('author')
+        .get(pk=comment_id))

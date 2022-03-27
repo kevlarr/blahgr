@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.utils import IntegrityError
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, render
 
 from .forms import CommentForm, PostForm
@@ -69,6 +69,22 @@ def details(request, post_id):
     )
 
 
+def delete(request, post_id):
+    if request.method != 'POST':
+        raise Http404
+
+    post = queries.post(post_id)
+
+    # This doesn't use `login_required` because it shouldn't redirect,
+    # so check if not authenticated
+    if not request.user.is_authenticated or request.user.id != post.author.id:
+        return HttpResponse('Unauthorized', status=401)
+
+    post.delete()
+
+    return redirect('blog-index')
+
+
 @login_required
 def new_comment(request, post_id):
     if request.method != 'POST':
@@ -95,3 +111,17 @@ def new_comment(request, post_id):
     messages.success(request, 'Thanks for adding to the discussion!')
 
     return redirect('blog-details', post.id)
+
+
+def delete_comment(request, comment_id):
+    if request.method != 'POST':
+        raise Http404
+
+    comment = queries.comment(comment_id)
+
+    if not request.user.is_authenticated or request.user.id != comment.author.id:
+        return HttpResponse('Unauthorized', status=401)
+
+    comment.delete()
+
+    return redirect('blog-details', comment.post_id)
