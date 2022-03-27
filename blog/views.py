@@ -4,7 +4,7 @@ from django.db.utils import IntegrityError
 from django.http import Http404
 from django.shortcuts import redirect, render
 
-from .forms import PostForm
+from .forms import CommentForm, PostForm
 from . import queries
 
 
@@ -60,8 +60,38 @@ def new(request):
 def details(request, post_id):
     post = queries.post(post_id)
 
+    comment_form = CommentForm() if request.user.is_authenticated else None
+
     return render(
         request=request,
         template_name='details.html',
-        context={'post': post, 'comments': post.comments},
+        context={'post': post, 'comment_form': comment_form},
     )
+
+
+@login_required
+def new_comment(request, post_id):
+    if request.method != 'POST':
+        raise Http404
+
+    post = queries.post(post_id)
+    form = CommentForm(request.POST)
+
+    if not form.is_valid():
+        # Best UX for an invalid form? This is a different route than the
+        # form is display on, so redirecting will lose error message but rendering
+        # the form will then have a different URL
+        return render(
+            request=request,
+            template_name='details.html',
+            context={'post': post, 'comment_form': form},
+        )
+
+    comment = form.save(commit=False)
+    comment.author = request.user
+    comment.post = post
+    comment.save()
+
+    messages.success(request, 'Thanks for adding to the discussion!')
+
+    return redirect('blog-details', post.id)

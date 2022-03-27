@@ -9,6 +9,7 @@
         <p class="meta">Posted by {{post.author.username}} on {{post.created_at|date:'D, M jS Y \a\t h:i A'}}</p>
         <p class="content">{{post.text}}</p>
     </div>
+
     {% if post.comments.all|length > 0 %}
         <h2>{{ post.comments.all|length }} Comments</h2>
         <ul class="post-comments">
@@ -19,6 +20,16 @@
             {% endfor %}
         </ul>
     {% endif %}
+
+    {% if comment_form %}
+        <h2>Share your thoughts!</h2>
+        <form method="POST" action="{% url 'comment-new' post.id %}">
+            {% csrf_token %}
+            <ul>{{ comment_form.as_ul }}</ul>
+            <button type="submit">Comment</button>
+        </form>
+    {% endif %}
+
     <p><a href="{% url 'blog-index' %}">&larr; Back to posts</a></p>
 {% endspaceless %}
 {% endblock %}

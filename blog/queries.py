@@ -5,7 +5,9 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-from .models import Post
+from django.db.models import Prefetch
+
+from .models import Comment, Post
 
 
 class OffsetError(Exception):
@@ -26,16 +28,27 @@ class PostSummary:
 
 def post(post_id: int) -> Post:
     """
-    Returns the post by id, with author and comments preloaded
+    Returns the post by id along with author and comments ordered chronologically
     """
-    return Post.objects.prefetch_related('author', 'comments', 'comments__author').get(pk=post_id)
+    comments = Prefetch(
+        'comments',
+        queryset=Comment.objects
+            .prefetch_related('author')
+            .order_by('created_at'),
+    )
+    return (Post.objects
+        .prefetch_related('author', comments)
+        .get(pk=post_id))
 
 
 def headline_post() -> Post:
     """
     Returns the latest post with author preloaded
     """
-    return Post.objects.prefetch_related('author').first()
+    return (Post.objects
+        .prefetch_related('author')
+        .order_by('-created_at')
+        .first())
 
 
 def post_summaries(*, offset: int = 0) -> list[PostSummary]:
@@ -48,6 +61,7 @@ def post_summaries(*, offset: int = 0) -> list[PostSummary]:
     queryset = (Post
         .objects
         .values_list('id', 'title', 'created_at', 'author__username')
+        .order_by('-created_at')
         .all()
         [offset:])
 
