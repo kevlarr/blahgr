@@ -9,4 +9,4 @@ COPY poetry.lock pyproject.toml /blahgr/
 RUN pip3 install poetry
 RUN poetry install
 
-CMD ["./entrypoint"]
+CMD ["./.docker/run"]

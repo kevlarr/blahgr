@@ -1,3 +1,6 @@
+# This is technically out-dated, but version 2 offers us `depends_on`
+# which is *incredibly* useful, and version 3 is really mainly updated
+# for use in docker swarm, which... not interested in.
 version: '2'
 
 services:
@@ -21,7 +24,9 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    build: .
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
     environment:
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432

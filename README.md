@@ -11,14 +11,15 @@ Start the database and web server by running:
 $ docker-compose up
 
 # Or run them in the background
-# docker-compose up -d
+$ docker-compose up -d
 ```
 
 This will take care of initializing a new database, running migrations,
 and starting the web server.
 You should then be able to visit http://localhost:8000 and see the running application!
 
-If you would like to seed the database with sample data, you can run:
+If you would like to seed the database with sample data, you can run the
+(comically long) command:
 
 ```bash
 $ docker-compose run server poetry run python manage.py seedblog
