@@ -60,7 +60,7 @@ def new(request):
 def details(request, post_id):
     post = queries.post(post_id)
 
-    comment_form = CommentForm() if request.user else None
+    comment_form = CommentForm() if request.user.is_authenticated else None
 
     return render(
         request=request,
