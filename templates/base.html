@@ -1,21 +1,23 @@
 <!doctype html>
 {% spaceless %}
-    <html>
-        <head>
-            <meta charset="utf-8"/>
+<html>
+    <head>
+        <meta charset="utf-8"/>
 
-            <title>Blahgr - {% block title %}Blogging Made Simple!{% endblock %}</title>
+        <title>Blahgr - {% block title %}Blogging Made Simple!{% endblock %}</title>
 
-            {% load static %}
-            <link href="{% static 'main.css' %}" rel="stylesheet"/>
-        </head>
-        <body>
-            <header>{% include "header.html" %}</header>
-            <main>
-                {% include "messages.html" %}
-                {% block content %}{% endblock %}
-            </main>
-            <footer>{% include "footer.html" %}</footer>
-        </body>
-    </html>
+        {% load static %}
+        <link href="{% static 'main.css' %}" rel="stylesheet"/>
+    </head>
+    <body>
+        <header>
+            {% include "header.html" %}
+            {% include "messages.html" %}
+        </header>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        <footer>{% include "footer.html" %}</footer>
+    </body>
+</html>
 {% endspaceless %}
