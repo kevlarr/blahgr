@@ -1,5 +1,6 @@
+from django.contrib import messages
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from .forms import PostForm
 from . import queries
@@ -22,6 +23,19 @@ def new(request):
     match request.method:
         case 'GET':
             form = PostForm()
+
+        case 'POST':
+            form = PostForm(request.POST)
+
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.author = request.user
+                post.save()
+                messages.success(request, 'Thanks for sharing!')
+
+                return redirect('blog-details', post.id)
+
+            messages.error(request, 'Hmm, something is not quite right..')
 
         case _:
             raise Http404

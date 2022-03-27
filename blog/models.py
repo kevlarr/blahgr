@@ -9,7 +9,6 @@ class Post(models.Model):
     """
     A blog post
     """
-
     class Meta:
         constraints = [
             models.UniqueConstraint(
@@ -43,7 +42,6 @@ class Comment(models.Model):
     """
     A comment on a blog post
     """
-
     class Meta:
         ordering = ['-created_at']
 

@@ -7,7 +7,7 @@ after logging in rather than a static LOGIN_REDIRECT_URL, collecting metrics, et
 """
 from django.contrib import auth, messages
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 
 from .forms import LoginForm, SignupForm
 
@@ -61,6 +61,7 @@ def signup(request):
                 user = form.save()
                 auth.login(request, user)
                 messages.success(request, 'Thanks for signing up!')
+
                 return redirect('home')
 
             messages.error(request, 'Almost there! Just a few things to fix.')
