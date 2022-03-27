@@ -3,12 +3,17 @@
 {% block content %}
 {% spaceless %}
     <div class="posts-list">
-        <div class="headline-post">
-            <h1 class="title">{{headline.title}}</h1>
-            <p class="meta">Posted by {{headline.author.username}} on {{headline.created_at|date:'D, M jS Y \a\t h:i A'}}</p>
-            <p class="snippet">{{headline.text|slice:":1000"}}</p>
-            <p class="more"><a href="{% url 'blog-details' headline.id %}">Read more &rarr;</a></p>
-        </div>
+        {% if headline %}
+            <div class="headline-post">
+                <h1 class="title">{{headline.title}}</h1>
+                <p class="meta">Posted by {{headline.author.username}} on {{headline.created_at|date:'D, M jS Y \a\t h:i A'}}</p>
+                <p class="snippet">{{headline.text|slice:":1000"}}</p>
+                <p class="more"><a href="{% url 'blog-details' headline.id %}">Read more &rarr;</a></p>
+            </div>
+        {% else %}
+            <h1>No posts to display</h1>
+        {% endif %}
+
         {% if remaining|length > 0 %}
             <ul class="remaining-posts">
                 {% for meta in remaining %}
