@@ -16,7 +16,6 @@ class Post(models.Model):
                 name='blog_post_author_id_title_uniq',
             ),
         ]
-        ordering = ['-created_at']
 
     author = models.ForeignKey(
         auth.get_user_model(),
@@ -42,9 +41,6 @@ class Comment(models.Model):
     """
     A comment on a blog post
     """
-    class Meta:
-        ordering = ['-created_at']
-
     author = models.ForeignKey(
         auth.get_user_model(),
         null=False,
