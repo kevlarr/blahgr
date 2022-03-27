@@ -1,6 +1,9 @@
-# from django.contrib.auth.models import User
+"""
+Blog models
+"""
 from django.contrib import auth
 from django.db import models
+
 
 class Post(models.Model):
     """
@@ -8,6 +11,12 @@ class Post(models.Model):
     """
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['author_id', 'title'],
+                name='blog_post_author_id_title_uniq',
+            ),
+        ]
         ordering = ['-created_at']
 
     author = models.ForeignKey(
@@ -26,7 +35,6 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
 
 class Comment(models.Model):
     """

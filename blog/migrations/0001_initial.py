@@ -21,6 +21,8 @@ class Migration(migrations.Migration):
                 ('author', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to=settings.AUTH_USER_MODEL)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
+
+                # Text fields last to reduce padding between columns
                 ('title', models.TextField(help_text='The title of the blog post')),
                 ('text', models.TextField(help_text='The contents of the blog post')),
             ],
