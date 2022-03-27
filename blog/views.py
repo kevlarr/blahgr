@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import redirect, render
 
@@ -17,6 +18,7 @@ def index(request):
     )
 
 
+@login_required
 def new(request):
     # TODO: Okay this is *definitely* a pattern so there must
     # be a standard abstraction for this
