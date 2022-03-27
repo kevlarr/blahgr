@@ -29,8 +29,6 @@ def login(request):
 
                 return redirect('home')
 
-            messages.error(request, 'So close! Please try again')
-
         case _: raise Http404
 
     return render(
@@ -64,8 +62,6 @@ def signup(request):
                 messages.success(request, 'Thanks for signing up!')
 
                 return redirect('home')
-
-            messages.error(request, 'Almost there! Just a few things to fix.')
 
         case _: raise Http404
 

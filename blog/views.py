@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.utils import IntegrityError
 from django.http import Http404
 from django.shortcuts import redirect, render
 
@@ -21,23 +22,30 @@ def index(request):
 @login_required
 def new(request):
     # TODO: Okay this is *definitely* a pattern so there must
-    # be a standard abstraction for this
+    # be a standard pattern or abstraction for this
     match request.method:
         case 'GET':
             form = PostForm()
 
         case 'POST':
             form = PostForm(request.POST)
+            exc = None
 
             if form.is_valid():
                 post = form.save(commit=False)
                 post.author = request.user
-                post.save()
-                messages.success(request, 'Thanks for sharing!')
 
-                return redirect('blog-details', post.id)
+                try:
+                    # Should this do `post.validate_unique` prior to saving?
+                    # That would add an extra round-trip but would not advance the
+                    # id sequence on a violation.
+                    post.save()
+                    messages.success(request, 'Thanks for sharing!')
 
-            messages.error(request, 'Hmm, something is not quite right..')
+                    return redirect('blog-details', post.id)
+
+                except IntegrityError as e:
+                    form.errors['title'] = ['You have already used this title']
 
         case _:
             raise Http404
