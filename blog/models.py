@@ -9,7 +9,6 @@ class Post(models.Model):
     """
     A blog post
     """
-
     class Meta:
         constraints = [
             models.UniqueConstraint(
@@ -24,7 +23,10 @@ class Post(models.Model):
         null=False,
         on_delete=models.RESTRICT,
     )
-    title = models.TextField(
+    title = models.CharField(
+        # Quick googlefu indicates 'ideal' title lengths around 50-60 characters,
+        # which also helps keep titles more 'sluggable' for URLs
+        max_length=100,
         null=False,
         help_text='The title of the blog post',
     )
@@ -40,7 +42,6 @@ class Comment(models.Model):
     """
     A comment on a blog post
     """
-
     class Meta:
         ordering = ['-created_at']
 

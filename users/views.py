@@ -6,14 +6,14 @@ since it allows for more custom behaviors (eg. returning to last page visited
 after logging in rather than a static LOGIN_REDIRECT_URL, collecting metrics, etc).
 """
 from django.contrib import auth, messages
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 
 from .forms import LoginForm, SignupForm
 
 
 def login(request):
-    # TODO: Logic is the same as signup...
     match request.method:
         case 'GET':
             form = LoginForm()
@@ -23,11 +23,11 @@ def login(request):
 
             if form.is_valid():
                 auth.login(request, form.get_user())
-                # TODO: Would be nice to try returning them to where they came from
-                # if no auth wall on the page
-                return redirect('home')
 
-            messages.error(request, 'So close! Please try again')
+                if (next_path := request.GET.get('next')):
+                    return redirect(next_path)
+
+                return redirect('home')
 
         case _: raise Http404
 
@@ -37,15 +37,14 @@ def login(request):
         context={'form': form}
     )
 
-
+@login_required
 def logout(request):
     if request.method != 'GET':
         raise Http404
     
     auth.logout(request)
 
-    # TODO: Would be nice to try returning them to where they came from
-    # if no auth wall on the page
+    # TODO: Redirect to last page?
     return redirect('home')
 
 
@@ -61,9 +60,8 @@ def signup(request):
                 user = form.save()
                 auth.login(request, user)
                 messages.success(request, 'Thanks for signing up!')
-                return redirect('home')
 
-            messages.error(request, 'Almost there! Just a few things to fix.')
+                return redirect('home')
 
         case _: raise Http404
 
