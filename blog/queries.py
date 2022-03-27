@@ -24,9 +24,16 @@ class PostSummary:
     title: str
 
 
+def post(post_id: int) -> Post:
+    """
+    Returns the post by id, with author and comments preloaded
+    """
+    return Post.objects.prefetch_related('author', 'comments', 'comments__author').get(pk=post_id)
+
+
 def headline_post() -> Post:
     """
-    Returns the latest post
+    Returns the latest post with author preloaded
     """
     return Post.objects.prefetch_related('author').first()
 

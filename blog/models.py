@@ -53,6 +53,7 @@ class Comment(models.Model):
         'Post',
         null=False,
         on_delete=models.RESTRICT,
+        related_name='comments',
     )
     text = models.TextField(
         null=False,
