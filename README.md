@@ -3,7 +3,7 @@
 Blahgr is a simple Django blogging application that supports:
 
 - Signing up as a new user
-- Creating posts
+- Creating and editing posts
 - Commenting on yours or others' posts
 - Deleting your own posts or comments<sup>1</sup>
 - A custom `manage.py` command to generate sample data
