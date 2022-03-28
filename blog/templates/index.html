@@ -5,7 +5,9 @@
     <div class="posts-list">
         {% if headline %}
             <div class="headline-post">
-                <h1 class="title">{{headline.title}}</h1>
+                <h1 class="title">
+                    <a href="{% url 'blog-details' headline.id %}">{{headline.title}}</a>
+                </h1>
                 <p class="meta">Posted by {{headline.author.username}} on {{headline.created_at|date:'D, M jS Y \a\t h:i A'}}</p>
                 <p class="snippet">{{headline.text|slice:":1000"}}</p>
                 <p class="more"><a href="{% url 'blog-details' headline.id %}">Read more &rarr;</a></p>

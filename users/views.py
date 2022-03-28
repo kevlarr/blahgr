@@ -16,10 +16,10 @@ from .forms import LoginForm, SignupForm
 def login(request):
     match request.method:
         case 'GET':
-            form = LoginForm()
+            form = LoginForm(label_suffix='')
 
         case 'POST':
-            form = LoginForm(request, data=request.POST)
+            form = LoginForm(request, data=request.POST, label_suffix='')
 
             if form.is_valid():
                 auth.login(request, form.get_user())
@@ -37,6 +37,7 @@ def login(request):
         context={'form': form}
     )
 
+
 @login_required
 def logout(request):
     if request.method != 'GET':
@@ -51,10 +52,10 @@ def logout(request):
 def signup(request):
     match request.method:
         case 'GET':
-            form = SignupForm()
+            form = SignupForm(label_suffix='')
 
         case 'POST':
-            form = SignupForm(request.POST)
+            form = SignupForm(request.POST, label_suffix='')
 
             if form.is_valid():
                 user = form.save()

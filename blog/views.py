@@ -25,10 +25,10 @@ def new(request):
     # be a standard pattern or abstraction for this
     match request.method:
         case 'GET':
-            form = PostForm()
+            form = PostForm(label_suffix='')
 
         case 'POST':
-            form = PostForm(request.POST)
+            form = PostForm(request.POST, label_suffix='')
             exc = None
 
             if form.is_valid():
@@ -60,7 +60,7 @@ def new(request):
 def details(request, post_id):
     post = queries.post(post_id)
 
-    comment_form = CommentForm() if request.user.is_authenticated else None
+    comment_form = CommentForm(label_suffix='') if request.user.is_authenticated else None
 
     return render(
         request=request,
@@ -91,7 +91,7 @@ def new_comment(request, post_id):
         raise Http404
 
     post = queries.post(post_id)
-    form = CommentForm(request.POST)
+    form = CommentForm(request.POST, label_suffix='')
 
     if not form.is_valid():
         # Best UX for an invalid form? This is a different route than the

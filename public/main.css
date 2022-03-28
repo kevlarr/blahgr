@@ -1,8 +1,79 @@
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, p {
     margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+
+a {
+    color: #426BA2;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.flex {
+    display: flex;
+    flex-direction: column;
+}
+
+form.delete {
+    float: right;
+}
+
+form ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+form > ul > li {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+form ul label {
+    display: block;
+    font-weight: 900;
+}
+
+form ul input {
+    display: block;
+    padding: 0.5rem;
+}
+
+form ul .helptext {
+    font-size: 80%;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    padding: 0.5rem;
+}
+
+button.primary {
+    background-color: #426BA2;
+    color: white;
+    /*font-size: 18px;*/
+}
+
+button.trash {
+    background-color: white;
+    color: #A71C1C;
+    font-size: 24px;
+}
+
+form .errorlist {
+    color: #A71C1C;
+    margin-top: 0.5rem;
+    order: 100;
 }
 
 html {
+    font-family: Raleway, sans-serif;
     height: 100%;
 }
 
@@ -19,25 +90,61 @@ main {
     padding: 5rem;
 }
 
-header, footer {
-    align-items: center;
-    display: flex;
-    justify-content: center;
+header {
+    flex-direction: column;
 }
 
-header {
-    border-bottom: 1px solid black;
+header nav {
+    background-color: #426BA2;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+header .logo {
+    color: white;
+    font-family: Sacramento, cursive;
+    font-size: 48px;
+    margin: 0;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 0 10px;
+    text-decoration: none;
+}
+
+header .context-links {
+    align-items: center;
+    color: white;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+header .context-links li {
+    margin-right: 2rem;
+}
+
+header .context-links a {
+    color: white;
+    text-decoration: none;
+}
+
+header .context-links a:hover {
+    text-decoration: underline;
 }
 
 footer {
-    border-top: 1px solid black;
+    align-items: center;
+    display: flex;
+    justify-content: center;
     padding: 1rem;
 }
 
 .posts-list .headline-post {
-    border-radius: 5px;
-    box-shadow: 0 0 25px 5px rgba(0, 0, 0, 0.15);
-    font-size: 125%;
+    border-bottom: 1px solid #426BA2;
+    font-size: 120%;
     margin-bottom: 5rem;
 }
 
@@ -71,4 +178,16 @@ footer {
 
 .posts-list .remaining-posts .post-summary {
     margin-bottom: 2rem;
+}
+
+.post-details {
+    margin-bottom: 2rem;
+}
+
+.messages {
+    background-color: #A1CE7D;
+    list-style-type: none;
+    margin: 0;
+    padding: 1rem;
+    text-align: center;
 }

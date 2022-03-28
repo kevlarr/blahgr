@@ -5,7 +5,15 @@
 {% block content %}
 {% spaceless %}
     <div class="post-details">
+
+        {% if post.author.id == user.id %}
+            <form class="delete" method="POST" action="{% url 'blog-delete' post.id %}">
+                {% csrf_token %}
+                <button class="trash" type="submit">🗑</button>
+            </form>
+        {% endif %}
         <h1 class="title">{{post.title}}</h1>
+
         <p class="meta">Posted by {{post.author.username}} on {{post.created_at|date:'D, M jS Y \a\t h:i A'}}</p>
         <p class="content">{{post.text}}</p>
     </div>
@@ -14,23 +22,21 @@
         <h2>{{ post.comments.all|length }} Comments</h2>
         <ul class="post-comments">
             {% for comment in post.comments.all %}
-            <li>{{ comment.author.username }} at {{comment.created_at|date:'m/d/Y h:i A'}} said
-                <blockquote>{{ comment.text }}</blockquote>
-
-                {% if comment.author.id == user.id %}
-                    <form class="delete" method="POST" action="{% url 'comment-delete' comment.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Remove the comment</button>
-                    </form>
-                {% endif %}
-            </li>
+                <li>{{ comment.author.username }} at {{comment.created_at|date:'m/d/Y h:i A'}} said
+                    {% if comment.author.id == user.id %}
+                        <form class="delete" method="POST" action="{% url 'comment-delete' comment.id %}">
+                            {% csrf_token %}
+                            <button class="trash" type="submit">🗑</button>
+                        </form>
+                    {% endif %}
+                    <blockquote>{{ comment.text }}</blockquote>
+                </li>
             {% endfor %}
         </ul>
     {% endif %}
 
     {% if comment_form %}
-        <h2>Share your thoughts!</h2>
-        <form method="POST" action="{% url 'comment-new' post.id %}">
+        <form class="flex" method="POST" action="{% url 'comment-new' post.id %}">
             {% csrf_token %}
             <ul>{{ comment_form.as_ul }}</ul>
             <button type="submit">Comment</button>
@@ -39,11 +45,5 @@
 
     <p><a href="{% url 'blog-index' %}">&larr; Back to posts</a></p>
 
-    {% if post.author.id == user.id %}
-        <form class="delete" method="POST" action="{% url 'blog-delete' post.id %}">
-            {% csrf_token %}
-            <button type="submit">Remove the post</button>
-        </form>
-    {% endif %}
 {% endspaceless %}
 {% endblock %}
