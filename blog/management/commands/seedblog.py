@@ -37,5 +37,6 @@ class Command(BaseCommand):
         })
         self.seeder.add_entity(Comment, 45, {
             'text': lambda _: self.seeder.faker.paragraph(3),
+            'deleted_at': None,
         })
         self.seeder.execute()
