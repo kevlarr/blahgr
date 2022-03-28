@@ -52,7 +52,7 @@ def new(request):
 
     return render(
         request=request,
-        template_name='new.html',
+        template_name='form.html',
         context={'form': form},
     )
 
@@ -66,6 +66,42 @@ def details(request, post_id):
         request=request,
         template_name='details.html',
         context={'post': post, 'comment_form': comment_form},
+    )
+
+
+def edit(request, post_id):
+    if request.method not in ('GET', 'POST'):
+        raise Http404
+
+    post = queries.post(post_id)
+
+    # This doesn't use `login_required` because it shouldn't redirect,
+    # so check if not authenticated
+    if not request.user.is_authenticated or request.user.id != post.author.id:
+        return HttpResponse('Unauthorized', status=401)
+
+    match request.method:
+        case 'GET':
+            form = PostForm(instance=post, label_suffix='')
+
+        case 'POST':
+            form = PostForm(request.POST, instance=post, label_suffix='')
+
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Thanks for sharing!')
+
+                return redirect('blog-details', post.id)
+
+            else:
+                # Get rid of the impersonal 'Post with this Author and Title already exists'
+                del form.errors['__all__']
+                form.errors['title'] = ['You have already used this title']
+
+    return render(
+        request=request,
+        template_name='form.html',
+        context={'form': form},
     )
 
 
