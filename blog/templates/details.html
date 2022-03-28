@@ -7,10 +7,13 @@
     <div class="post-details">
 
         {% if post.author.id == user.id %}
-            <form class="delete" method="POST" action="{% url 'blog-delete' post.id %}">
-                {% csrf_token %}
-                <button class="trash" type="submit">🗑</button>
-            </form>
+            <div class="author-controls">
+                <a class="edit" href="{% url 'blog-edit' post.id %}">🖉</a>
+                <form class="delete" method="POST" action="{% url 'blog-delete' post.id %}">
+                    {% csrf_token %}
+                    <button class="trash" type="submit">🗑</button>
+                </form>
+            </div>
         {% endif %}
         <h1 class="title">{{post.title}}</h1>
 
@@ -24,10 +27,12 @@
             {% for comment in post.comments.all %}
                 <li>{{ comment.author.username }} at {{comment.created_at|date:'m/d/Y h:i A'}} said
                     {% if comment.author.id == user.id %}
-                        <form class="delete" method="POST" action="{% url 'comment-delete' comment.id %}">
-                            {% csrf_token %}
-                            <button class="trash" type="submit">🗑</button>
-                        </form>
+                        <div class="author-controls">
+                            <form class="delete" method="POST" action="{% url 'comment-delete' comment.id %}">
+                                {% csrf_token %}
+                                <button class="trash" type="submit">🗑</button>
+                            </form>
+                        </div>
                     {% endif %}
                     <blockquote>{{ comment.text }}</blockquote>
                 </li>
